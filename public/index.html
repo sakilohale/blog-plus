@@ -7,6 +7,19 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
+  <style>
+    html{
+      /*这里不设置这个高度100%是为了可以让页面滚动起来*/
+      /*height: 100%;*/
+      width: 100%;
+    }
+    body{
+      /* html没有设置高度那么body也就不用了 */
+      width: 100%;
+      margin: 0;
+
+    }
+  </style>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>

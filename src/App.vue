@@ -1,32 +1,58 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+ <div id="app">
+
+   <!--内容栏-->
+   <div class="content">
+     <!--顶部固定栏-->
+     <myheader class="header"></myheader>
+       <router-view></router-view>
+   </div>
+ </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import rightbar from './components/right-bar'
+  import myheader from './components/my-header'
 
-#nav {
-  padding: 30px;
-}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+export default {
+  name: 'app',
+  components: {
+    rightbar:rightbar,
+    myheader:myheader,
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+  },
+  data(){
+    return{
+      table : false
+    }
+  }
 }
+</script>
+
+<style scoped>
+
+  #app{
+    width: 100%;
+    display: flex;
+    margin: 0;
+    background: #232526;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #414345, #232526);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #414345, #232526); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  }
+
+  .content{
+    display: flex;
+    flex-direction: column;
+    width:100%;
+
+  }
+
+  .header{
+    width: 100%;
+    height: 80px;
+    position: fixed;
+  }
+
 </style>
