@@ -8,7 +8,8 @@
     direction="ttb"
     title="Sakilohale的一些可公开情报"
     size="70%"
-    :modal="false">
+    :modal="false"
+  style="z-index: 1">
     <chart :content="chartcontent[0]"></chart>
     <chart :content="chartcontent[1]"></chart>
     <div class="meizi"><img src="../assets/meizi.jpg" style="width: 100%;height: 100%" /></div>

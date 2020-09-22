@@ -7,8 +7,13 @@
     </el-backtop>
 
     <!--这是一个目录索引组件，position设置为fixed-->
-    <div class="indexBoxItem" id="indexBoxItem">
-      <a class="link" v-for="(item,index) in linkitem " href="#1" @click="goto($event)">{{item.html}}</a>
+    <div class="indexBoxItem" id="indexBoxItem" style=" top:400px;">
+      <div class="catalog" @click="showlog()">CATALOG</div>
+      <div v-if="log">
+
+      <a class="link" v-for="(item,index) in linkitem " href="#1" @click="goto($event)">☛{{item.html}}</a>
+
+      </div>
     </div>
 
 
@@ -78,6 +83,7 @@
         id: router.history.current.query.id,
         tag:{time:'xx mins',field:'front end',author:'sakilohale'},
         linkitem:[],
+        log:true,
         content:"这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容"
       }
     },
@@ -96,31 +102,47 @@
         var list=this.linkitem;
 
         list.forEach((item,index) => {
-            var linkItem = document.getElementsByClassName('link').item(index)
-            linkItem.setAttribute('id', 'anchor_'+index);
-           linkItem.setAttribute('offset_top', item.offset-100);
-           linkItem.href = 'javascript:void(0)';
-           // $('.indexBoxItem a').click(function(){
-           //   var item = this;
-           //   var heightset = item.getAttribute('offset_top')
-           //   console.log(heightset)
-           //   // $(document).scrollTop(heightset);
-           //   $("html,body").animate({ scrollTop:heightset },800);
-           //   // $("body").animate({ scrollTop:heightset},1000)});
-           // });
+           var linkItem = document.getElementsByClassName('link').item(index)
+           linkItem.setAttribute('id', 'anchor_'+index);
+
+           /*        这里设置一个offset_top属性是用来存储该a标签对应的h3标题的offsettop，这里-100是因为我的布局问题，实际情况可以改变      */
+
+          linkItem.setAttribute('offset_top', item.offset-100);
+          linkItem.href = 'javascript:void(0)';
 
          })},
 
          goto:function (e) {
-           //   $("html,body").animate({ scrollTop:heightset },800);
-           console.log(e.target.attributes[4].nodeValue)
+           console.log(e.target.attributes)
+           /*   通过原事件来获取该标签的各种信息及属性，非常好用nice       */
            var heightset = e.target.attributes[4].nodeValue
            $("html,body").animate({ scrollTop:heightset },500);
 
 
-         }
+         },
+      showlog:function () {
 
+        this.log = !this.log;
+      },
 
+        /*   滑动监听的一个函数，这个函数主要用来判断页面滑动的距离和指定标签的offsettop之间的关系    */
+      handleScroll:function () {
+        var scrollTop =document.documentElement.scrollTop
+
+        console.log(scrollTop)
+
+        var offtop = document.getElementById('indexBoxItem').offsetTop
+
+        console.log(offtop)
+
+        if(scrollTop>offtop-100){
+        $('#indexBoxItem').offset({top:scrollTop+150});
+        console.log(document.getElementById('indexBoxItem'))
+        }
+        if(scrollTop<offtop && scrollTop>300){
+          $('#indexBoxItem').offset({top:scrollTop+100});
+        }
+      }
 
 
 
@@ -132,11 +154,19 @@
     mounted() {
         var that=this
         this.gettitles();
+
         setTimeout(function () {
          that.inputtitles();
-        },1000)
+        },1000);
 
-    }
+        /*  设置一个全局监听器，监听滑动事件scroll  */
+      window.addEventListener('scroll', this.handleScroll)
+
+    },
+
+    destroyed () {
+      window.removeEventListener('scroll', this.handleScroll)
+    },
 
   }
 
@@ -179,23 +209,29 @@
 
  }
  .indexBoxItem{
- width: 150px;
+   width: 150px;
    height: 200px;
-   position: fixed;
+   position:absolute;
    right:200px;
-   top:300px;
  }
-
+.catalog{
+  font-size:25px ;
+  color: #232526;
+}
 .link{
   display: block;
-  font-size: 20px;
+  font-size: 15px;
   text-decoration: none;
   color: #232526;
   margin-top: 8px;
+  margin-left: 15px;
 }
 .link:hover{
-  color: darkred;
+  color: red;
 }
+  .catalog:hover{
+  color: red;
+  }
  .mytitle{
    height: 100px;
    line-height: 100px;
