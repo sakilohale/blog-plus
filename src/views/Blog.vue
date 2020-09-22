@@ -1,5 +1,5 @@
 <template>
-  <div class="blog" @click="gettitles()">
+  <div class="blog">
 
     <!--这是elementui的返回顶部组件-->
     <el-backtop :visibility-height="60">
@@ -7,8 +7,8 @@
     </el-backtop>
 
     <!--这是一个目录索引组件，position设置为fixed-->
-    <div class="indexBoxItem">
-
+    <div class="indexBoxItem" id="indexBoxItem">
+      <a class="link" v-for="(item,index) in linkitem " href="#1" @click="goto($event)">{{item.html}}</a>
     </div>
 
 
@@ -77,36 +77,66 @@
         router: router,
         id: router.history.current.query.id,
         tag:{time:'xx mins',field:'front end',author:'sakilohale'},
+        linkitem:[],
         content:"这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容，这是我的内容"
       }
     },
 
     methods:{
         gettitles:function () {
-       var titles = document.querySelectorAll('h3');
-       var indexBoxItem = document.getElementsByClassName('indexBoxItem')[0]
+          var titles = document.querySelectorAll('h3');
 
-       titles.forEach((element,index)=>{
+          titles.forEach((element, index) => {
+            this.linkitem.push({html:element.innerHTML,offset:element.offsetTop});
+          })
 
-         var linkItem = document.createElement("a");
-         linkItem.innerHTML = element.innerHTML;
-         linkItem.setAttribute('id', 'anchor_'+index);
-         linkItem.setAttribute('class', 'link-index');
-         linkItem.setAttribute('offset_top', element.offsetTop);
-         linkItem.href = 'javascript:void(0)';
-         $(document).on("click", ".indexBoxItem a", function(){
-           var item = this;
-           $(document).scrollTop(item.getAttribute('offset_top'));
-         });
-         indexBoxItem.append(linkItem);
-       })
+          console.log(this.linkitem)
         },
+      inputtitles:function () {
+        var list=this.linkitem;
+
+        list.forEach((item,index) => {
+            var linkItem = document.getElementsByClassName('link').item(index)
+            linkItem.setAttribute('id', 'anchor_'+index);
+           linkItem.setAttribute('offset_top', item.offset-100);
+           linkItem.href = 'javascript:void(0)';
+           // $('.indexBoxItem a').click(function(){
+           //   var item = this;
+           //   var heightset = item.getAttribute('offset_top')
+           //   console.log(heightset)
+           //   // $(document).scrollTop(heightset);
+           //   $("html,body").animate({ scrollTop:heightset },800);
+           //   // $("body").animate({ scrollTop:heightset},1000)});
+           // });
+
+         })},
+
+         goto:function (e) {
+           //   $("html,body").animate({ scrollTop:heightset },800);
+           console.log(e.target.attributes[4].nodeValue)
+           var heightset = e.target.attributes[4].nodeValue
+           $("html,body").animate({ scrollTop:heightset },500);
+
+
+         }
+
+
+
+
+
+
     },
 
+
+
     mounted() {
+        var that=this
+        this.gettitles();
+        setTimeout(function () {
+         that.inputtitles();
+        },1000)
 
     }
-
 
   }
 
@@ -154,12 +184,17 @@
    position: fixed;
    right:200px;
    top:300px;
-   background: rosybrown;
  }
 
-.link-index{
-  font-size: 15px;
+.link{
+  display: block;
+  font-size: 20px;
+  text-decoration: none;
   color: #232526;
+  margin-top: 8px;
+}
+.link:hover{
+  color: darkred;
 }
  .mytitle{
    height: 100px;
