@@ -23,7 +23,7 @@
 
    <div class="nav">
      <span style="justify-self: start;margin-top: 20px">分类</span>
-     <router-link to="/" class="nav_item" v-for="(item,index) in navList ":key="item.name">{{item.name}}</router-link>
+     <router-link to="/" class="nav_item" v-for="(item,index) in navList ":key="item.name"> <img style="width: 25px;height:25px;display: inline-block;margin-left: 20px;margin-right: 10px" :src="item.photo"/>   {{item.name}}</router-link>
    </div>
    </div>
 

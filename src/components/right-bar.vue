@@ -3,7 +3,7 @@
    <div class="content1">
    </div>
    <div class="content">
-     <img src="../assets/chahua2.jpg" style="width: 100%;height: 100%" />
+     <img src="../assets/maomeizi.jpg" style="width: 100%;height: 100%" />
    </div>
    <div class="content">
      <img src="../assets/chahua3.jpg" style="width: 100%;height: 100%" />
